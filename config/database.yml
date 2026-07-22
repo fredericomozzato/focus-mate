@@ -1,0 +1,35 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("DB_USER") %>
+  password: <%= ENV.fetch("DB_PASSWORD") %>
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+
+
+development:
+  <<: *default
+  database: focus_mate_development
+
+test:
+  <<: *default
+  database: focus_mate_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: focus_mate_production
+    username: focus_mate
+    password: <%= ENV["FOCUS_MATE_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: focus_mate_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: focus_mate_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: focus_mate_production_cable
+    migrations_paths: db/cable_migrate
