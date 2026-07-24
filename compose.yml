@@ -11,9 +11,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: password
+      POSTGRES_HOST: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
 
   db:
     image: postgres:18-alpine
